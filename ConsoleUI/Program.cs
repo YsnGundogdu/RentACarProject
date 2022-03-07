@@ -10,15 +10,22 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+            //CarTest();
+
+
+
+        }
+
+        private static void CarTest()
+        {
             CarManager carManager = new CarManager(new EfCarDal());
 
-            
+
             foreach (var car in carManager.GetAll())
             {
                 Console.WriteLine(car.CarDescription);
             }
 
-            
             carManager.Add(new Car
             {
                 CarDescription = "mercedes a200 bişey bişey",
@@ -28,9 +35,6 @@ namespace ConsoleUI
                 CarStatus = false,
                 BrandId = 10
             });
-
-
-
         }
     }
 }
