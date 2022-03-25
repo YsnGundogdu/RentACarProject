@@ -15,15 +15,15 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
-        public IResult Add(Color color)
+        public IResult Add(Color entity)
         {
-            _colorDal.Add(color);
+            _colorDal.Add(entity);
             return new SuccessResult("Renk Eklendi");
         }
 
-        public IResult Delete(Color color)
+        public IResult Delete(Color entity)
         {
-            _colorDal.Delete(color);
+            _colorDal.Delete(entity);
             return new SuccessResult("Renk Silindi");
         }
 
@@ -32,14 +32,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
         }
 
-        public IDataResult<Color> GetById(int colorId)
+        public IDataResult<Color> GetById(int id)
         {
-            return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == colorId));
+            return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == id));
         }
 
-        public IResult Update(Color color)
+        public IResult Update(Color entity)
         {
-            _colorDal.Update(color);
+            _colorDal.Update(entity);
             return new SuccessResult("Renk Güncellendi");
         }
     }

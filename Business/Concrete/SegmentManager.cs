@@ -15,15 +15,15 @@ namespace Business.Concrete
         {
             _segmentDal = segmentDal;
         }
-        public IResult Add(Segment segment)
+        public IResult Add(Segment entity)
         {
-            _segmentDal.Add(segment);
+            _segmentDal.Add(entity);
             return new SuccessResult("Segment Eklendi");
         }
 
-        public IResult Delete(Segment segment)
+        public IResult Delete(Segment entity)
         {
-            _segmentDal.Delete(segment);
+            _segmentDal.Delete(entity);
             return new SuccessResult("Segment Silindi");
         }
 
@@ -32,14 +32,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Segment>>(_segmentDal.GetAll());
         }
 
-        public IDataResult<Segment> GetById(int segmentId)
+        public IDataResult<Segment> GetById(int id)
         {
-            return new SuccessDataResult<Segment>(_segmentDal.Get(s => s.SegmentId == segmentId));
+            return new SuccessDataResult<Segment>(_segmentDal.Get(s => s.SegmentId == id));
         }
 
-        public IResult Update(Segment segment)
+        public IResult Update(Segment entity)
         {
-            _segmentDal.Update(segment);
+            _segmentDal.Update(entity);
             return new SuccessResult("Segment Güncellendi");
         }
     }

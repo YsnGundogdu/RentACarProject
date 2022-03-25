@@ -19,11 +19,11 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public IResult Add(Car car)
+        public IResult Add(Car entity)
         {
-            if (car.CarDescription.Length > 15 && car.CarModelYear > 2015)
+            if (entity.CarDescription.Length > 15 && entity.CarModelYear > 2015)
             {
-                _carDal.Add(car);
+                _carDal.Add(entity);
                 return new SuccessResult("Araba başarılı bir şekilde eklendi.");
             }
             else
@@ -33,15 +33,15 @@ namespace Business.Concrete
            
         }
 
-        public IResult Delete(Car car)
+        public IResult Delete(Car entity)
         {
-            _carDal.Delete(car);
+            _carDal.Delete(entity);
             return new SuccessResult();
         }
 
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour == 12)
+            if (DateTime.Now.Hour == 10)
             {
                 return new ErrorDataResult<List<Car>>("Bakımda");
             }
@@ -53,9 +53,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.SegmentId == id));
         }
 
-        public IDataResult<Car> GetById(int carId)
+        public IDataResult<Car> GetById(int id)
         {
-            return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == carId));
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == id));
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
@@ -73,9 +73,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
         }
 
-        public IResult Update(Car car)
+        public IResult Update(Car entity)
         {
-            _carDal.Update(car);
+            _carDal.Update(entity);
             return new SuccessResult();
         }
     }

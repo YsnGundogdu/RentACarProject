@@ -12,7 +12,18 @@ namespace ConsoleUI
         {
             //CarTest();
             //CarDeleteTest();
+            //CarDtoTest();
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            rentalManager.Add(new Rental
+            {
+            });
+                
+                
 
+        }
+
+        private static void CarDtoTest()
+        {
             CarManager carManager = new CarManager(new EfCarDal());
 
             var result = carManager.GetCarDetails();
@@ -28,8 +39,6 @@ namespace ConsoleUI
             {
                 Console.WriteLine(result.Message);
             }
-            
-
         }
 
         private static void CarDeleteTest()

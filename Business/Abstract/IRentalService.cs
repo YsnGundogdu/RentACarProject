@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface ISegmentService : IBaseService<Segment>
+    public interface IRentalService : IBaseService<Rental>
     {
         
     }
