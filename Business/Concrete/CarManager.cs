@@ -36,7 +36,7 @@ namespace Business.Concrete
         public IResult Delete(Car entity)
         {
             _carDal.Delete(entity);
-            return new SuccessResult();
+            return new SuccessResult("Araba Başarılı Bir Şekilde Silindi");
         }
 
         public IDataResult<List<Car>> GetAll()
@@ -76,7 +76,7 @@ namespace Business.Concrete
         public IResult Update(Car entity)
         {
             _carDal.Update(entity);
-            return new SuccessResult();
+            return new SuccessResult("Araba Başarılı Bir Şekilde Güncellendi");
         }
     }
 }
