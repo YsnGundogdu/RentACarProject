@@ -1,4 +1,7 @@
 ﻿using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
@@ -19,18 +22,11 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car entity)
         {
-            if (entity.CarDescription.Length > 15 && entity.CarModelYear > 2015)
-            {
                 _carDal.Add(entity);
-                return new SuccessResult("Araba başarılı bir şekilde eklendi.");
-            }
-            else
-            {
-                return new ErrorResult("Araba açıklaması 15 karakterden ve model yılı 2015'ten büyük olmalıdır.");
-            }
-           
+                return new SuccessResult("Araba başarılı bir şekilde eklendi.");     
         }
 
         public IResult Delete(Car entity)
