@@ -13,18 +13,16 @@ namespace ConsoleUI
             //CarTest();
             //CarDeleteTest();
             //CarDtoTest();
-            RentalManager rentalManager = new RentalManager(new EfRentalDal());
-            rentalManager.Add(new Rental
-            {
-            });
+            //RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            //rentalManager.Add(new Rental{});
                 
                 
 
         }
-
+        /*
         private static void CarDtoTest()
         {
-            CarManager carManager = new CarManager(new EfCarDal());
+            CarManager carManager = new CarManager(new EfCarDal(),new SegmentManager(new EfSegmentDal()));
 
             var result = carManager.GetCarDetails();
 
@@ -71,5 +69,6 @@ namespace ConsoleUI
             //    BrandId = 10
             //});
         }
+        */
     }
 }
