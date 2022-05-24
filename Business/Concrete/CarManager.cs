@@ -53,16 +53,16 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour == 10)
+            if (DateTime.Now.Hour == 8)
             {
                 return new ErrorDataResult<List<Car>>("Bakımda");
             }
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(),"Arabalar");
         }
 
-        public IDataResult<List<Car>> GetAllBySegmentId(int id)
+        public IDataResult<List<CarDetailDto>> GetCarsBySegmentId(int segmentId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.SegmentId == id));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.SegmentId == segmentId));
         }
 
         [CacheAspect]
@@ -76,14 +76,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>> (_carDal.GetCarDetails()); 
         }
 
-        public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
+        public IDataResult<List<CarDetailDto>> GetCarsByBrandId(int brandId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.BrandId == brandId));
         }
 
-        public IDataResult<List<Car>> GetCarsByColorId(int colorId)
+        public IDataResult<List<CarDetailDto>> GetCarsByColorId(int colorId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.ColorId == colorId));
         }
 
         [ValidationAspect(typeof(CarValidator))]

@@ -20,10 +20,10 @@ namespace WebAPI.Controllers
             _carService = carService;
         }
 
-        [HttpGet("getallbysegmentid")]
-        public IActionResult GetAllBySegmentId(int id)
+        [HttpGet("getcarsbysegmentid")]
+        public IActionResult GetCarsBySegmentId(int segmentId)
         {
-            var result = _carService.GetAllBySegmentId(id);
+            var result = _carService.GetCarsBySegmentId(segmentId);
             if (result.Success)
             {
                 return Ok(result);

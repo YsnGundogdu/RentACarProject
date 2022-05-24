@@ -12,8 +12,8 @@ namespace Entities.Concrete
         public int CustomerId { get; set; }
         public int RentLocationId { get; set; }
         public int ReturnLocationId { get; set; }
-        public DateTime RentDate { get; set; }
-        public DateTime ReturnDate { get; set; }
+        public DateTime RentDate { get; set; } = DateTime.Now.Date;
+        public DateTime? ReturnDate { get; set; } = null;
 
     }
 }

@@ -2,8 +2,10 @@
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -17,12 +19,22 @@ namespace Business.Concrete
         }
         public IResult Add(Rental entity)
         {
+            var result = RentalCarControl(entity.CarId);
+            if (!result.Success)
+            {
+                return new ErrorResult("RentalNotDelivered");
+            }
+            else
+                _rentalDal.Add(entity);
+            return new SuccessResult("ItemAdded");
+            /*
             if (!entity.ReturnDate.Equals(null))
             {
                 _rentalDal.Add(entity);
                 return new SuccessResult();
             }
             return new ErrorResult();
+            */
         }
 
         public IResult Delete(Rental entity)
@@ -39,6 +51,20 @@ namespace Business.Concrete
         public IDataResult<Rental> GetById(int id)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.RentalId == id));
+        }
+        public IResult RentalCarControl(int carId)
+        {
+            var result = _rentalDal.GetAll(r => r.CarId == carId && r.ReturnDate == null).Any();
+            if (result)
+            {
+                return new ErrorResult("RentalNotDelivered");
+            }
+
+            return new SuccessResult();
+        }
+        public IDataResult<List<RentalDetailDto>> GetRentalDetails()
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
         }
 
         public IResult Update(Rental entity)
