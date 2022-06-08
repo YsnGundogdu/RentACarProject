@@ -11,5 +11,6 @@ namespace Business.Abstract
     {
         IDataResult<List<RentalDetailDto>> GetRentalDetails();
         IResult RentalCarControl(int CarId);
+        IResult CheckIfCarIsAvailable(int carId, DateTime rentDate, DateTime returnDate);
     }
 }

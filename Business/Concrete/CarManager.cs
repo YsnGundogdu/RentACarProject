@@ -20,14 +20,19 @@ namespace Business.Concrete
     {
         ICarDal _carDal;
         ISegmentService _segmentService;
+        private IBrandService _brandService;
+        private IColorService _colorService;
 
-        public CarManager(ICarDal carDal, ISegmentService segmentService)
+
+        public CarManager(ICarDal carDal, ISegmentService segmentService, IBrandService brandService, IColorService colorService)
         {
             _carDal = carDal;
+            _brandService = brandService;
+            _colorService = colorService;
             _segmentService = segmentService;
         }
 
-        [SecuredOperation("car.add,admin")]
+        [SecuredOperation("car.add")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car entity)
@@ -41,7 +46,7 @@ namespace Business.Concrete
             }
 
             _carDal.Add(entity);
-            return new SuccessResult("Araba başarılı bir şekilde eklendi.");
+            return new SuccessResult("Araba eklendi.");
             
         }
 
@@ -74,6 +79,27 @@ namespace Business.Concrete
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             return new SuccessDataResult<List<CarDetailDto>> (_carDal.GetCarDetails()); 
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int carId)
+        {
+            var result = BusinessRules.Run(IsCarExists(carId));
+            if (result != null)
+            {
+                return new ErrorDataResult<List<CarDetailDto>>();
+            }
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(x => x.CarId == carId));
+        }
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByColorAndByBrand(int colorId, int brandId)
+        {
+            var result = BusinessRules.Run(IsColorExists(colorId), IsBrandExists(brandId));
+            if (result != null)
+            {
+                return new ErrorDataResult<List<CarDetailDto>>();
+            }
+
+
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.ColorId == colorId && c.BrandId == brandId));
         }
 
         public IDataResult<List<CarDetailDto>> GetCarsByBrandId(int brandId)
@@ -114,7 +140,7 @@ namespace Business.Concrete
         private IResult CheckIfCarDescriptionExists(string carDescription)
         {
             var result = _carDal.GetAll(p => p.CarDescription == carDescription).Count;
-            if (result >= 0)
+            if (result > 0)
             {
                 return new ErrorResult("Bu açıklamaya ait zaten bir araba var");
             }
@@ -129,6 +155,34 @@ namespace Business.Concrete
                 return new ErrorResult("Segment Limiti Aşıldı");
             }
             return new SuccessResult();
+        }
+
+        private IResult IsCarExists(int carId)
+        {
+            var result = _carDal.GetByID(carId);
+            if (result != null)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
+        }
+        private IResult IsColorExists(int colorId)
+        {
+            var result = _colorService.GetById(colorId);
+            if (result != null)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
+        }
+        private IResult IsBrandExists(int brandId)
+        {
+            var result = _brandService.GetById(brandId);
+            if (result != null)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult();
         }
     }
 }

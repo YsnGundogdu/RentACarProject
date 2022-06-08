@@ -32,7 +32,11 @@ namespace DataAccess.Concrete.EntityFramework
                                         CarDescription = c.CarDescription,
                                         DailyPrice = s.DailyPrice,
                                         SegmentName = s.SegmentName,
-                                        ColorName = r.ColorName
+                                        ColorName = r.ColorName,
+                                        ImagePath = (from m in context.CarImages 
+                                                     where m.CarId == c.CarId
+                                                     select m.ImagePath).FirstOrDefault()
+                                         
                              };
 
                 //return result.ToList();

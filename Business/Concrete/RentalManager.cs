@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Castle.Core.Internal;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -65,6 +66,33 @@ namespace Business.Concrete
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
+        }
+
+        public IResult CheckIfCarIsAvailable(int carId, DateTime rentDate, DateTime returnDate)
+        {
+            var result = _rentalDal.GetAll(r => r.CarId == carId && r.ReturnDate >= rentDate);
+            if (result.IsNullOrEmpty() == false)
+            {
+                return new ErrorResult("Araba şuan mevcut değil. Şu tarihte mevcut olacak: " +
+                                       result[result.Count - 1].ReturnDate.Value.ToString("yyyy-MM-dd"));
+            }
+
+            if (rentDate > returnDate)
+            {
+                return new ErrorResult("Başlangıç günü bitiş gününden önce olmalıdır");
+            }
+
+            if ((returnDate - rentDate).Days > 365)
+            {
+                return new ErrorResult("Kiralamanız 1 yılı aşıyor");
+            }
+
+            if (rentDate < DateTime.Now || returnDate < DateTime.Now)
+            {
+                return new ErrorResult("Arabayı geçmiş için değil gelecek için kiralamalısınız");
+            }
+
+            return new SuccessResult("Araba mevcuttur");
         }
 
         public IResult Update(Rental entity)

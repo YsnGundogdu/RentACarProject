@@ -40,6 +40,13 @@ namespace Core.DataAccess.EntityFramework
                 return context.Set<TEntity>().SingleOrDefault(filter); //Tek data getirme
             }
         }
+        public TEntity GetByID(int id)
+        {
+            using (TContext context = new TContext())
+            {
+                return context.Set<TEntity>().Find(id);
+            }
+        }
 
         public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {

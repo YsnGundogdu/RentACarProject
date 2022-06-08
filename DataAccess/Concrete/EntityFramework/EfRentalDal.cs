@@ -23,10 +23,21 @@ namespace DataAccess.Concrete.EntityFramework
                              select new RentalDetailDto()
                              {
                                  RentalId = r.RentalId,
-                                 UserFullName = u.UserFirstName +" "+ u.UserLastName,
+                                 UserFullName = u.UserFirstName + " " + u.UserLastName,
                                  CarDescription = c.CarDescription,
                                  RentLocationDescription = l.LocationDescription,
-                                 ReturnLocationDescription = rl.LocationDescription
+                                 ReturnLocationDescription = rl.LocationDescription,
+                                 CarModelYear = c.CarModelYear,
+                                 BrandName = (from b in context.Brands
+                                              where b.BrandId == c.BrandId
+                                              select b.BrandName).FirstOrDefault(),
+                                 ColorName = (from cl in context.Colors
+                                              where cl.ColorId == c.ColorId
+                                              select cl.ColorName).FirstOrDefault(),
+                                 DailyPrice = (from s in context.Segments
+                                               where s.SegmentId == c.SegmentId
+                                               select s.DailyPrice).FirstOrDefault()
+
                              };
                 return result.ToList();
             }
